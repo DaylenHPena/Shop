@@ -1,0 +1,9 @@
+venv
+frontend/node_modules
+backend/-- clean data.sql
+backend/data_import.py
+backend/data.json
+frontend/src/setupTests.js
+frontend/src/reportWebVitals.js
+frontend/src/App.test.js
+backend/*/migrations

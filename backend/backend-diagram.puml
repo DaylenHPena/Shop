@@ -1,0 +1,101 @@
+@startuml
+title Class Diagram
+User --|> django.contrib.auth.models.AbstractUser
+Address --|> django.db.models.Model
+ShippingAddress --|> django.db.models.Model
+CartItem --|> django.db.models.Model
+Order --|> django.db.models.Model
+OrderLine --|> django.db.models.Model
+Product --|> django.db.models.Model
+Payment --|> django.db.models.Model
+CostumerPaymentMethod --|> django.db.models.Model
+
+
+User <-- "many" Order : costumer
+User <-- "many"  CartItem : costumer
+User <-- ShippingAddress : costumer
+User <-- CostumerPaymentMethod :costumer
+Address <--  ShippingAddress : address
+Order "1" --* "many" OrderLine
+Order --> Address
+Order --> Payment
+OrderLine --> Product :product
+Product <-- CartItem:product
+Product "1"-- "many" User:liked_by
+Payment <-- CostumerPaymentMethod:method
+
+
+
+class ShippingAddress {
+    +bool is_default
+}
+
+class Address {
+    +text postal_code
+    +text region
+    +text city
+    +text address_line_1
+    +text address_line_2
+    +text street
+    +text unit_number
+    +text apt_number
+}
+
+class CartItem {
+    +int quantity
+}
+
+class Order {
+    +date date
+    +text status
+    +decimal total
+}
+class OrderLine {
+    +int quantity
+    +decimal price
+}
+class Payment {
+    +text account_number
+    +date expiry_date
+}
+
+class CostumerPaymentMethod {
+    +bool is_default
+}
+@enduml
+
+
+@startuml
+title Message Typing
+
+actor Actor
+boundary Chat
+control ChatConsumer
+control JWTAuthentication
+
+Actor -> Chat: Type message
+Chat -> JWTAuthentication : Check auth tokens
+JWTAuthentication -> Chat : Auth repsonse
+Chat -> ChatConsumer : Typing event
+ChatConsumer -> Chat : Typing event response
+@enduml
+
+@startuml
+title Send Message
+
+actor Actor
+boundary Chat
+control JWTAuthentication
+control ChatConsumer
+entity Message
+database Database
+
+Actor -> Chat: Send message
+Chat -> JWTAuthentication : Check auth tokens
+JWTAuthentication -> Chat : Auth repsonse
+Chat -> ChatConsumer :  Send message
+ChatConsumer -> Chat : Send message
+Chat -> Actor: Receive message
+ChatConsumer -> Message : Save message
+Message -> Database: Save
+@enduml

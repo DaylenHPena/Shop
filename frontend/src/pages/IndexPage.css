@@ -1,0 +1,28 @@
+.gallerie {
+  position: relative;
+}
+
+.gallerie:hover .grid__overlay {
+  transform: translateY(0%);
+}
+
+.gallerie:hover h4 {
+  display: none;
+}
+
+.grid__overlay {
+  background: rgb(159 108 182 / 74%);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  transform: translateY(101%);
+  transition: all 0.8s ease;
+}
+
+.grid__overlay div {
+  flex-grow: 1;
+}
